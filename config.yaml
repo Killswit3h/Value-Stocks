@@ -1,0 +1,77 @@
+provider: polygon
+timezone: America/New_York
+
+universe:
+  exchanges: [XNAS, XNYS, XASE]
+  include_types: [CS]
+  min_price: 3.0
+  min_market_cap: 500000000   # $500M
+  min_adv_usd_30d: 5000000    # $5M
+  max_total_symbols: 25
+  max_per_sector: 5
+
+triggers:
+  one_day_drop_pct: -40.0
+  deep_dd_52w: 40.0
+  deep_dd_day_move: -8.0
+  expand_deep_dd_day_move: -4.0
+
+filters:
+  gross_margin_min: 0.15
+  allow_low_gm_sectors: [Energy, Materials]
+  net_debt_to_ebitda_max: 4.0
+  interest_coverage_min: 3.0
+  require_positive_ocf_ttm: true
+  earnings_buffer_days: 2
+
+scoring:
+  weights:
+    valuation:
+      fcf_yield: 15
+      ev_to_ebitda_inv: 10
+      pb_inv: 5
+    quality:
+      roic_or_roa: 10
+      gm_stability_inv: 5
+      rev_cagr_3y: 5
+    momentum:
+      rsi14_inv: 10
+      dist_to_200dma_inv: 5
+    risk:
+      beta_mid_range: 10
+      vol30_inv: 5
+    liquidity:
+      dollar_volume_rank: 5
+      short_interest_sweetspot: 5
+    penalties:
+      earnings_window: 10
+      headline_flags: 25
+      sec_delinquency: 40
+      going_concern: 60
+
+risk_keywords:
+  - guidance
+  - restatement
+  - SEC
+  - delisting
+  - fraud
+  - FDA
+  - trial
+  - CRL
+  - PDUFA
+  - going concern
+
+charts:
+  provider: quickchart
+  width: 800
+  height: 300
+
+run:
+  top_n: 12
+  dry_run_max_candidates: 100
+  cache_dir: .cache
+  runs_dir: runs
+  http_timeout_sec: 30
+  max_retries: 5
+  retry_base_delay_sec: 1.0
+  retry_max_delay_sec: 8.0

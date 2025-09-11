@@ -1,0 +1,12 @@
+requests>=2.32.0
+python-dotenv>=1.0.1
+PyYAML>=6.0.2
+numpy>=1.26.4
+pandas>=2.2.2
+matplotlib>=3.9.0
+scipy>=1.13.1
+pytest>=8.2.0
+types-requests>=2.32.0.20240602
+types-PyYAML>=6.0.12.20240808
+python-dateutil>=2.9.0.post0
+tenacity>=9.0.0
