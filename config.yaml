@@ -1,0 +1,61 @@
+# Configuration for Daily -40% Drop Value Screen
+execution:
+  max_candidates: 12
+  min_candidates_before_expand: 5
+  expanded_drawdown_threshold: -0.04
+  log_dir: runs
+  chart_dir: charts
+  timezone: America/New_York
+  market_close_hour: 16
+  market_close_minute: 0
+
+data_source:
+  provider: polygon
+  base_url: https://api.polygon.io
+  max_retries: 5
+  backoff_seconds: 1
+  cache_ttl_seconds: 900
+
+universe:
+  exchanges: [NYSE, NASDAQ, AMEX]
+  min_price: 3.0
+  min_market_cap: 500000000
+  min_adv_usd: 5000000
+  max_total_candidates: 25
+  max_per_sector: 5
+  excluded_keywords: ["ETF", "ETN", "SPAC"]
+
+filters:
+  min_gross_margin: 0.15
+  allow_low_margin_sectors: [Energy, Materials]
+  min_interest_coverage: 3.0
+  max_net_debt_ebitda: 4.0
+  earnings_days_buffer: 2
+  earnings_window_days: 10
+  flagged_headline_window_days: 3
+
+scores:
+  valuation:
+    fcf_yield_weight: 15
+    ev_to_ebitda_weight: 10
+    price_to_book_weight: 5
+  quality:
+    roic_weight: 10
+    gross_margin_stability_weight: 5
+    revenue_cagr_weight: 5
+  momentum:
+    rsi_weight: 10
+    distance_to_200dma_weight: 5
+  risk:
+    beta_band_center: 1.0
+    beta_band_halfwidth: 0.4
+    beta_weight: 10
+    volatility_weight: 5
+  liquidity:
+    dollar_volume_weight: 5
+    short_interest_weight: 5
+  penalties:
+    earnings_weight: 10
+    headline_weight: 25
+    sec_delinquency_weight: 40
+    going_concern_weight: 60
